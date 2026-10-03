@@ -1,22 +1,40 @@
-# Scholarship data contribution guide
+# Global Scholarship Finder
 
-This directory is intended to become the source of truth for scholarship listings. Accuracy matters more than quantity.
+An open-source, multilingual-first scholarship discovery platform for students worldwide.
 
-## Required verification workflow
+## Current MVP
 
-1. Find the provider's official scholarship page. Do not use aggregators as the primary source.
-2. Record the exact official application URL and the page where the requirements were checked.
-3. Check degree level, eligible nationalities, study field, funding, deadline, and required documents.
-4. Set `verificationStatus` to `needs-review` until a second contributor or maintainer confirms the record.
-5. Add the reviewer's GitHub handle and an ISO date in `lastVerified`.
-6. Mark expired opportunities as `expired`; do not silently change their deadline.
-7. Submit a pull request explaining what changed and linking to the official source.
+- Search and filter official-source-linked prototype opportunities
+- Filter by degree, destination, funding, and field of study
+- Save opportunities locally in the browser
+- Build a private student profile for matching
+- Link directly to official scholarship sources
+- Responsive, accessible, low-dependency frontend
 
-## Status values
+## Run locally
 
-- `needs-review`: collected but not independently confirmed
-- `verified`: confirmed against the official source
-- `expired`: deadline passed or programme closed
-- `rejected`: source could not be confirmed or listing is unsafe
+This MVP is a static site. Open `index.html` in a browser, or serve the folder with any static web server:
 
-Never collect passports, transcripts, financial records, or other sensitive student documents in this repository.
+```bash
+python -m http.server 8000
+```
+
+Then visit `http://localhost:8000`.
+
+## Data trust rules
+
+The current eight records are prototype listings for interface testing. They are not presented as a complete or currently verified database. Users should confirm eligibility, deadlines, and application requirements on each official provider website before applying.
+
+The planned data workflow is documented in [`data/README.md`](data/README.md), with a machine-readable schema in [`data/scholarships.schema.json`](data/scholarships.schema.json). A listing must have an official source, a verification status, and a reviewer/date before it can be marked verified.
+
+## Roadmap
+
+1. Import structured records into the app from the data directory.
+2. Add a verification dashboard and reviewer audit history.
+3. Add country-specific eligibility rules and translations.
+4. Add email/calendar deadline reminders.
+5. Add a backend API and production deployment.
+
+## License
+
+MIT

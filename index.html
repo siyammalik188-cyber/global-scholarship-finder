@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Find verified scholarships around the world." />
+    <title>Global Scholarship Finder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Global Scholarship Finder home">
+        <span class="brand-mark">GS</span>
+        <span>Global Scholarship Finder</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#discover">Discover</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#saved">Saved <span id="saved-count" class="nav-count">0</span></a>
+      </nav>
+      <button id="profile-nav" class="button button-dark button-small">Build my profile</button>
+    </header>
+
+    <main id="top">
+      <section class="hero shell">
+        <div class="hero-copy">
+          <p class="eyebrow">Funding without borders</p>
+          <h1>Find the funding that moves you forward.</h1>
+          <p class="hero-text">Search verified scholarships from universities, governments, and trusted organizations—matched to your goals.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#discover">Explore scholarships <span>↗</span></a>
+            <button id="hero-profile" class="button button-ghost">Get matched <span>→</span></button>
+          </div>
+          <div class="trust-row"><span>✓</span> Official links only <span>✓</span> Updated deadlines <span>✓</span> Free for students</div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="glow glow-one"></div><div class="glow glow-two"></div>
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="planet">✦</div><div class="float-card card-one">🌍 <strong>140+</strong><small>countries</small></div>
+          <div class="float-card card-two">🎓 <strong>Fully funded</strong><small>opportunities</small></div>
+          <div class="float-card card-three">⌁ <strong>Verified</strong><small>sources</small></div>
+        </div>
+      </section>
+
+      <section class="stats shell" aria-label="Platform statistics">
+        <div><strong>120+</strong><span>verified opportunities</span></div>
+        <div><strong>42</strong><span>destination countries</span></div>
+        <div><strong>18</strong><span>study areas</span></div>
+        <div><strong>100%</strong><span>free to search</span></div>
+      </section>
+
+      <section id="discover" class="discover shell">
+        <div class="section-heading"><div><p class="eyebrow">Start your search</p><h2>Opportunities worth knowing about</h2></div><span id="result-count" class="result-count"></span></div>
+        <div class="search-bar"><label class="search-input"><span>⌕</span><input id="search" type="search" placeholder="Search by scholarship, university, or subject" /></label><button id="clear-filters" class="button button-light">Clear filters</button></div>
+        <div class="filter-grid">
+          <label>Degree level<select id="degree-filter"><option value="">Any level</option><option>Undergraduate</option><option>Master's</option><option>PhD</option></select></label>
+          <label>Destination<select id="destination-filter"><option value="">Anywhere</option><option>United Kingdom</option><option>United States</option><option>Canada</option><option>Australia</option><option>Germany</option><option>Europe</option></select></label>
+          <label>Funding<select id="funding-filter"><option value="">Any funding</option><option>Fully funded</option><option>Partial funding</option></select></label>
+          <label>Field of study<select id="field-filter"><option value="">Any field</option><option>Computer Science</option><option>Engineering</option><option>Business</option><option>Public Health</option><option>Environment</option></select></label>
+        </div>
+        <div id="scholarship-list" class="scholarship-list"></div>
+        <div id="empty-state" class="empty-state hidden"><div class="empty-icon">⌁</div><h3>No matching scholarships yet</h3><p>Try widening your filters or search terms. New verified opportunities are added regularly.</p><button id="empty-clear" class="button button-primary">Show all opportunities</button></div>
+      </section>
+
+      <section id="how-it-works" class="how-section">
+        <div class="shell"><p class="eyebrow">A clearer path forward</p><h2>Search less. Apply with confidence.</h2><div class="steps"><article><span>01</span><h3>Tell us your direction</h3><p>Choose your degree, subject, destination, and background.</p></article><article><span>02</span><h3>Compare real options</h3><p>See funding, eligibility, deadlines, and documents in one place.</p></article><article><span>03</span><h3>Take the next step</h3><p>Save opportunities and follow the official application link.</p></article></div></div>
+      </section>
+
+      <section id="saved" class="saved-section shell"><div class="section-heading"><div><p class="eyebrow">Your shortlist</p><h2>Saved for later</h2></div></div><div id="saved-list" class="saved-list"><p class="muted">Save scholarships to build your personal shortlist.</p></div></section>
+    </main>
+
+    <div id="profile-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="profile-title"><div class="modal-panel"><button class="modal-close" data-close-modal aria-label="Close">×</button><p class="eyebrow">Personalized matching</p><h2 id="profile-title">Build your student profile</h2><p class="modal-intro">We use these answers only in your browser to highlight more relevant opportunities.</p><form id="profile-form"><label>Degree level<select name="degree"><option value="">Any level</option><option>Undergraduate</option><option>Master's</option><option>PhD</option></select></label><label>Field of study<select name="field"><option value="">Any field</option><option>Computer Science</option><option>Engineering</option><option>Business</option><option>Public Health</option><option>Environment</option></select></label><label>Preferred destination<select name="destination"><option value="">Anywhere</option><option>United Kingdom</option><option>United States</option><option>Canada</option><option>Australia</option><option>Germany</option><option>Europe</option></select></label><button class="button button-primary" type="submit">Show my matches <span>→</span></button></form></div></div>
+    <footer><div class="shell footer-inner"><span>Global Scholarship Finder</span><span>Built for students everywhere · MVP</span><a href="https://github.com" target="_blank" rel="noreferrer">Open source on GitHub ↗</a></div></footer>
+    <script src="app.js"></script>
+  </body>
+</html>

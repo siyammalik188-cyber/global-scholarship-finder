@@ -1,0 +1,45 @@
+const scholarships = [
+  { id:'chevening', title:'Chevening Scholarships', provider:'UK Foreign, Commonwealth & Development Office', description:'Fully funded master’s study in the United Kingdom for future leaders with strong professional potential.', degree:"Master's", destination:'United Kingdom', funding:'Fully funded', field:'Any field', deadline:'05 Nov 2026', deadlineDate:'2026-11-05', source:'https://www.chevening.org/scholarships/', tags:['Tuition','Living stipend','Travel'] },
+  { id:'fulbright', title:'Fulbright Foreign Student Program', provider:'U.S. Department of State', description:'Graduate-level study and research opportunities in the United States for students from participating countries.', degree:"Master's", destination:'United States', funding:'Fully funded', field:'Any field', deadline:'Varies by country', deadlineDate:'2026-12-31', source:'https://foreign.fulbrightonline.org/', tags:['Tuition','Health cover','Stipend'] },
+  { id:'erasmus', title:'Erasmus Mundus Joint Masters', provider:'European Commission', description:'Study across multiple European universities through high-quality international master’s programmes.', degree:"Master's", destination:'Europe', funding:'Fully funded', field:'Any field', deadline:'Varies by programme', deadlineDate:'2027-01-15', source:'https://education.ec.europa.eu/study-in-europe/opportunities/scholarships-and-funding/erasmus-mundus-joint-masters', tags:['Multiple countries','Travel','Stipend'] },
+  { id:'daad', title:'DAAD Development-Related Postgraduate Courses', provider:'German Academic Exchange Service', description:'Postgraduate study in Germany for graduates from developing and newly industrialized countries.', degree:"Master's", destination:'Germany', funding:'Fully funded', field:'Engineering', deadline:'Varies by course', deadlineDate:'2026-10-31', source:'https://www.daad.de/en/studying-in-germany/scholarships/', tags:['Monthly allowance','Insurance','Travel'] },
+  { id:'australia-awards', title:'Australia Awards Scholarships', provider:'Australian Government', description:'Long-term development-focused study opportunities for students from eligible partner countries.', degree:"Master's", destination:'Australia', funding:'Fully funded', field:'Public Health', deadline:'30 Apr 2027', deadlineDate:'2027-04-30', source:'https://www.dfat.gov.au/people-to-people/australia-awards', tags:['Tuition','Flights','Living costs'] },
+  { id:'vanier', title:'Vanier Canada Graduate Scholarships', provider:'Government of Canada', description:'Doctoral scholarships recognizing world-class doctoral students in health, natural sciences, engineering, and social sciences.', degree:'PhD', destination:'Canada', funding:'Fully funded', field:'Environment', deadline:'30 Oct 2026', deadlineDate:'2026-10-30', source:'https://vanier.gc.ca/en/home-accueil.html', tags:['Doctoral research','CAD 50k/year','3 years'] },
+  { id:'commonwealth', title:'Commonwealth Master’s Scholarships', provider:'Commonwealth Scholarship Commission', description:'Master’s study in the UK for candidates who could not otherwise afford to study there.', degree:"Master's", destination:'United Kingdom', funding:'Fully funded', field:'Engineering', deadline:'Varies by nominator', deadlineDate:'2026-12-01', source:'https://cscuk.fcdo.gov.uk/scholarships/commonwealth-masters-scholarships/', tags:['Tuition','Airfare','Allowance'] },
+  { id:'susi', title:'Global Undergraduate Exchange Program', provider:'U.S. Department of State', description:'One-semester academic study and cultural exchange in the United States for emerging student leaders.', degree:'Undergraduate', destination:'United States', funding:'Fully funded', field:'Business', deadline:'Varies by country', deadlineDate:'2026-12-15', source:'https://exchanges.state.gov/non-us/program/global-undergraduate-exchange-program-global-ugrad', tags:['Exchange','Housing','Cultural programme'] }
+];
+
+const state = { saved: JSON.parse(localStorage.getItem('gsf-saved') || '[]'), profile: JSON.parse(localStorage.getItem('gsf-profile') || '{}') };
+const $ = (selector) => document.querySelector(selector);
+
+function escapeHtml(value) { return String(value).replace(/[&<>'"]/g, character => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[character])); }
+
+function matches(item) {
+  const search = $('#search').value.trim().toLowerCase();
+  const filters = { degree:$('#degree-filter').value, destination:$('#destination-filter').value, funding:$('#funding-filter').value, field:$('#field-filter').value };
+  const text = [item.title,item.provider,item.description,item.field,...item.tags].join(' ').toLowerCase();
+  return (!search || text.includes(search)) && (!filters.degree || item.degree === filters.degree) && (!filters.destination || item.destination === filters.destination) && (!filters.funding || item.funding === filters.funding) && (!filters.field || item.field === filters.field || item.field === 'Any field');
+}
+
+function renderScholarships() {
+  const filtered = scholarships.filter(matches);
+  $('#result-count').textContent = `${filtered.length} opportunit${filtered.length === 1 ? 'y' : 'ies'}`;
+  $('#empty-state').classList.toggle('hidden', filtered.length !== 0);
+  $('#scholarship-list').innerHTML = filtered.map(item => `<article class="scholarship-card"><div><div class="card-top"><span class="badge">${escapeHtml(item.funding)}</span><span class="provider">${escapeHtml(item.provider)}</span></div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description)}</p><div class="meta"><span>◈ ${escapeHtml(item.degree)}</span><span>⌖ ${escapeHtml(item.destination)}</span>${item.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}</div></div><div class="card-side"><div class="deadline">Deadline<strong>${escapeHtml(item.deadline)}</strong></div><button class="save-btn ${state.saved.includes(item.id) ? 'saved' : ''}" data-save="${item.id}">${state.saved.includes(item.id) ? '✓ Saved' : '+ Save'}</button><a class="button button-dark button-small" href="${escapeHtml(item.source)}" target="_blank" rel="noreferrer">Official site ↗</a></div></article>`).join('');
+  document.querySelectorAll('[data-save]').forEach(button => button.addEventListener('click', () => toggleSaved(button.dataset.save)));
+}
+
+function toggleSaved(id) { state.saved = state.saved.includes(id) ? state.saved.filter(savedId => savedId !== id) : [...state.saved, id]; localStorage.setItem('gsf-saved', JSON.stringify(state.saved)); renderScholarships(); renderSaved(); updateSavedCount(); }
+function updateSavedCount() { $('#saved-count').textContent = state.saved.length; }
+function renderSaved() { const items = scholarships.filter(item => state.saved.includes(item.id)); $('#saved-list').innerHTML = items.length ? items.map(item => `<div class="saved-item"><p>${escapeHtml(item.title)}</p><button class="save-btn saved" data-save="${item.id}">✓ Remove</button></div>`).join('') : '<p class="muted">Save scholarships to build your personal shortlist.</p>'; document.querySelectorAll('#saved-list [data-save]').forEach(button => button.addEventListener('click', () => toggleSaved(button.dataset.save))); }
+function openModal() { $('#profile-modal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; const form = $('#profile-form'); form.degree.value = state.profile.degree || ''; form.field.value = state.profile.field || ''; form.destination.value = state.profile.destination || ''; }
+function closeModal() { $('#profile-modal').classList.add('hidden'); document.body.style.overflow = ''; }
+
+document.querySelectorAll('#search, #degree-filter, #destination-filter, #funding-filter, #field-filter').forEach(element => element.addEventListener('input', renderScholarships));
+$('#clear-filters').addEventListener('click', () => { $('#search').value = ''; ['degree-filter','destination-filter','funding-filter','field-filter'].forEach(id => $(`#${id}`).value = ''); renderScholarships(); });
+$('#empty-clear').addEventListener('click', () => $('#clear-filters').click());
+['#profile-nav','#hero-profile'].forEach(selector => $(selector).addEventListener('click', openModal));
+document.querySelectorAll('[data-close-modal]').forEach(button => button.addEventListener('click', closeModal));
+$('#profile-modal').addEventListener('click', event => { if (event.target.id === 'profile-modal') closeModal(); });
+$('#profile-form').addEventListener('submit', event => { event.preventDefault(); state.profile = Object.fromEntries(new FormData(event.target).entries()); localStorage.setItem('gsf-profile', JSON.stringify(state.profile)); closeModal(); $('#degree-filter').value = state.profile.degree; $('#field-filter').value = state.profile.field; $('#destination-filter').value = state.profile.destination; renderScholarships(); document.querySelector('#discover').scrollIntoView({ behavior:'smooth' }); });
+renderScholarships(); renderSaved(); updateSavedCount();

@@ -1,38 +1,22 @@
-# Global Scholarship Finder
+# Scholarship data contribution guide
 
-An open-source, multilingual-first scholarship discovery platform for students worldwide.
+This directory is intended to become the source of truth for scholarship listings. Accuracy matters more than quantity.
 
-## Current MVP
+## Required verification workflow
 
-- Search and filter verified scholarship opportunities
-- Filter by degree, destination, funding, and field of study
-- Save opportunities locally in the browser
-- Build a private student profile for matching
-- Link directly to official scholarship sources
-- Responsive, accessible, low-dependency frontend
+1. Find the provider's official scholarship page. Do not use aggregators as the primary source.
+2. Record the exact official application URL and the page where the requirements were checked.
+3. Check degree level, eligible nationalities, study field, funding, deadline, and required documents.
+4. Set `verificationStatus` to `needs-review` until a second contributor or maintainer confirms the record.
+5. Add the reviewer's GitHub handle and an ISO date in `lastVerified`.
+6. Mark expired opportunities as `expired`; do not silently change their deadline.
+7. Submit a pull request explaining what changed and linking to the official source.
 
-## Run locally
+## Status values
 
-This MVP is a static site. Open `index.html` in a browser, or serve the folder with any static web server:
+- `needs-review`: collected but not independently confirmed
+- `verified`: confirmed against the official source
+- `expired`: deadline passed or programme closed
+- `rejected`: source could not be confirmed or listing is unsafe
 
-```bash
-python -m http.server 8000
-```
-
-Then visit `http://localhost:8000`.
-
-## Data trust rules
-
-Scholarship records should link to official sources and include a last-verified date before production use. The current sample data is a prototype dataset for interface testing; users should confirm deadlines and eligibility on each official provider website.
-
-## Roadmap
-
-1. Add a structured scholarship database and verification dashboard.
-2. Add country-specific eligibility rules and translations.
-3. Add email/calendar deadline reminders.
-4. Add contributor workflows and audit history.
-5. Add a backend API and production deployment.
-
-## License
-
-MIT
+Never collect passports, transcripts, financial records, or other sensitive student documents in this repository.

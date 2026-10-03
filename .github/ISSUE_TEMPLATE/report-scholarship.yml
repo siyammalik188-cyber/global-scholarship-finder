@@ -1,0 +1,39 @@
+name: Report scholarship information
+description: Report an expired, incorrect, or suspicious scholarship listing.
+title: "[Data report]: "
+labels: [data-quality]
+body:
+  - type: input
+    id: scholarship
+    attributes:
+      label: Scholarship title or ID
+      placeholder: Chevening Scholarships / chevening
+    validations:
+      required: true
+  - type: dropdown
+    id: report-type
+    attributes:
+      label: What is wrong?
+      options:
+        - Deadline is incorrect or expired
+        - Eligibility is incorrect
+        - Official link is broken
+        - Listing may be fraudulent
+        - Other information needs correction
+    validations:
+      required: true
+  - type: input
+    id: official-source
+    attributes:
+      label: Official source URL
+      description: Provide the provider's official page when possible.
+      placeholder: https://example.edu/scholarships
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Explain what should change and how you confirmed it.
+    validations:
+      required: true
